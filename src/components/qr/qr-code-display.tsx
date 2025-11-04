@@ -24,25 +24,24 @@ const getQrCodeOptions = (value: string, style: StyleData) => ({
   data: value,
   image: style.logo || undefined,
   dotsOptions: {
-    color: "#4dd8f9", // Electric Blue/Cyan
+    color: style.dotsColor || "#4dd8f9",
     type: style.dotType,
   },
   backgroundOptions: {
-    color: "#00000000", // Transparent
+    color: style.backgroundColor || "#00000000",
   },
   imageOptions: {
     imageSize: 0.4,
     margin: 4,
     hideBackgroundDots: true,
-    cornerTreatment: style.logoShape === 'round' ? 'circle' : 'square',
   },
   cornersSquareOptions: {
-    color: "#8a63f7", // Vibrant Purple
-    type: "extra-rounded" as const,
+    color: style.cornersColor || "#8a63f7",
+    type: style.cornerSquareType,
   },
   cornersDotOptions: {
-    color: "#8a63f7",
-    type: "dot" as const,
+    color: style.cornersColor || "#8a63f7",
+    type: style.cornerDotType,
   },
 });
 

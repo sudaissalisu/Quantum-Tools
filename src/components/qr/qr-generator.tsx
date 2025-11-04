@@ -27,6 +27,11 @@ export default function QRGenerator() {
   });
   const [style, setStyle] = useState<StyleData>({ 
     dotType: 'rounded',
+    cornerSquareType: 'extra-rounded',
+    cornerDotType: 'dot',
+    dotsColor: '#4dd8f9',
+    cornersColor: '#8a63f7',
+    backgroundColor: '#00000000',
     logo: undefined,
     logoShape: 'square'
   });
