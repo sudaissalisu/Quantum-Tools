@@ -1,62 +1,69 @@
 "use client";
 
-import { QRCodeSVG, QRCodeCanvas } from "qrcode.react";
+import { useEffect, useRef, useState } from "react";
+import QRCodeStyling from "qr-code-styling";
 import { Button } from "@/components/ui/button";
-import { Download, Atom } from "lucide-react";
+import { Download } from "lucide-react";
 import { Card, CardContent } from "../ui/card";
 import { useToast } from "@/hooks/use-toast";
 import { motion } from "framer-motion";
+import type { StyleData } from './style-form';
 
 type QRCodeDisplayProps = {
   value: string;
+  style: StyleData;
 };
 
 const QR_CODE_CONFIG = {
-  size: 256,
-  level: "Q",
-  includeMargin: true,
-  bgColor: "#ffffff",
-  fgColor: "#0A0A0B", // Almost black, matching the background
-  imageSettings: {
-    src: "/icon.svg",
-    height: 48,
-    width: 48,
-    excavate: true,
+  width: 256,
+  height: 256,
+  margin: 5,
+  image: "/icon.svg",
+  dotsOptions: {
+    color: "#4dd8f9", // Electric Blue/Cyan
+    type: "rounded" as const,
+  },
+  backgroundOptions: {
+    color: "#00000000", // Transparent
+  },
+  imageOptions: {
+    imageSize: 0.4,
+    margin: 4,
+  },
+  cornersSquareOptions: {
+    color: "#8a63f7", // Vibrant Purple
+    type: "extra-rounded" as const,
+  },
+  cornersDotOptions: {
+    color: "#8a63f7",
   },
 };
 
-const QR_CODE_DOWNLOAD_CONFIG = {
-  ...QR_CODE_CONFIG,
-  size: 1024,
-};
-
-
-export function QRCodeDisplay({ value }: QRCodeDisplayProps) {
+export function QRCodeDisplay({ value, style }: QRCodeDisplayProps) {
+  const [qrCode] = useState(new QRCodeStyling(QR_CODE_CONFIG));
+  const ref = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
 
-  const handleDownload = (format: 'png' | 'svg') => {
-    try {
-      if (format === 'svg') {
-        const svgEl = document.getElementById("react-qrcode-svg");
-        if (!svgEl) throw new Error("QR Code SVG element not found.");
-        
-        // Add a title to the SVG for accessibility
-        const titleEl = document.createElementNS("http://www.w3.org/2000/svg", "title");
-        titleEl.textContent = "QuantumQR Code";
-        svgEl.insertBefore(titleEl, svgEl.firstChild);
+  useEffect(() => {
+    if (ref.current) {
+      qrCode.append(ref.current);
+    }
+  }, [qrCode, ref]);
 
-        const svgData = new XMLSerializer().serializeToString(svgEl);
-        const blob = new Blob([svgData], { type: "image/svg+xml;charset=utf-t" });
-        const url = URL.createObjectURL(blob);
-        triggerDownload(url, "quantum-qrcode.svg");
-        URL.revokeObjectURL(url);
-      } else {
-        const canvasEl = document.getElementById("react-qrcode-canvas") as HTMLCanvasElement | null;
-        if (!canvasEl) throw new Error("QR Code Canvas element not found.");
-        
-        const url = canvasEl.toDataURL("image/png");
-        triggerDownload(url, "quantum-qrcode.png");
-      }
+  useEffect(() => {
+    qrCode.update({
+      data: value,
+      dotsOptions: { ...QR_CODE_CONFIG.dotsOptions, type: style.dotType },
+    });
+  }, [value, style, qrCode]);
+
+
+  const handleDownload = async (format: 'png' | 'svg') => {
+    try {
+      await qrCode.download({
+        name: "quantum-qrcode",
+        extension: format,
+      });
     } catch (error) {
       console.error("Download failed:", error);
       toast({
@@ -67,26 +74,17 @@ export function QRCodeDisplay({ value }: QRCodeDisplayProps) {
     }
   };
 
-  const triggerDownload = (url: string, fileName: string) => {
-    const link = document.createElement("a");
-    link.href = url;
-    link.download = fileName;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-  };
-  
   return (
-    <Card className="sticky top-8 bg-gray-900/60 backdrop-blur-sm border-gray-700 rounded-xl shadow-2xl">
+    <Card className="sticky top-8 bg-card/80 backdrop-blur-sm border-border/50 rounded-xl shadow-2xl">
       <CardContent className="p-6 flex flex-col items-center gap-6">
         <motion.div
-          key={value}
+          key={value + style.dotType}
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.3 }}
-          className="bg-white p-4 rounded-lg shadow-inner"
+          className="bg-background p-4 rounded-lg shadow-inner"
         >
-          <QRCodeSVG id="react-qrcode-svg" {...QR_CODE_CONFIG} value={value} />
+          <div ref={ref} />
         </motion.div>
         <div className="flex gap-4 w-full">
           <Button onClick={() => handleDownload('png')} className="flex-1 bg-primary/90 text-primary-foreground hover:bg-primary transition-transform hover:scale-105">
@@ -95,9 +93,6 @@ export function QRCodeDisplay({ value }: QRCodeDisplayProps) {
           <Button onClick={() => handleDownload('svg')} className="flex-1 bg-primary/90 text-primary-foreground hover:bg-primary transition-transform hover:scale-105">
             <Download className="mr-2 h-4 w-4" /> Download .svg
           </Button>
-        </div>
-        <div style={{ display: 'none' }}>
-          <QRCodeCanvas id="react-qrcode-canvas" {...QR_CODE_DOWNLOAD_CONFIG} value={value} />
         </div>
       </CardContent>
     </Card>
