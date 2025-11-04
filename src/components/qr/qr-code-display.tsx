@@ -55,13 +55,22 @@ export function QRCodeDisplay({ value, style }: QRCodeDisplayProps) {
     if (qrCode && ref.current) {
       qrCode.append(ref.current);
     }
-  }, [qrCode, ref]);
+  }, [qrCode]);
 
   useEffect(() => {
     if (!qrCode) return;
     qrCode.update({
       data: value,
-      dotsOptions: { ...QR_CODE_CONFIG.dotsOptions, type: style.dotType },
+      dotsOptions: {
+        ...QR_CODE_CONFIG.dotsOptions,
+        type: style.dotType,
+      },
+      cornersSquareOptions: {
+        ...QR_CODE_CONFIG.cornersSquareOptions,
+      },
+      cornersDotOptions: {
+        ...QR_CODE_CONFIG.cornersDotOptions,
+      },
     });
   }, [value, style, qrCode]);
 
