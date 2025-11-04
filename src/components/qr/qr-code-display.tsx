@@ -87,7 +87,7 @@ export function QRCodeDisplay({ value, style }: QRCodeDisplayProps) {
     <Card className="sticky top-8 bg-card/80 backdrop-blur-sm border-border/50 rounded-xl shadow-2xl">
       <CardContent className="p-6 flex flex-col items-center gap-6">
         <motion.div
-          key={value + style.dotType}
+          key={value + JSON.stringify(style)}
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.3 }}
