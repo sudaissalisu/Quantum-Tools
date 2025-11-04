@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Download } from "lucide-react";
 import { Card, CardContent } from "../ui/card";
 import { useToast } from "@/hooks/use-toast";
+import { motion } from "framer-motion";
 
 type QRCodeDisplayProps = {
   value: string;
@@ -51,16 +52,22 @@ export function QRCodeDisplay({ value }: QRCodeDisplayProps) {
   };
   
   return (
-    <Card className="sticky top-8">
+    <Card className="sticky top-8 bg-gray-900/60 backdrop-blur-sm border-gray-700 rounded-xl shadow-2xl">
       <CardContent className="p-6 flex flex-col items-center gap-6">
-        <div className="bg-white p-4 rounded-lg shadow-inner">
+        <motion.div
+          key={value}
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.3 }}
+          className="bg-white p-4 rounded-lg shadow-inner"
+        >
           <QRCodeSVG id="react-qrcode-svg" value={value} size={256} level="Q" includeMargin={true} />
-        </div>
+        </motion.div>
         <div className="flex gap-4 w-full">
-          <Button onClick={() => handleDownload('png')} className="flex-1 transition-transform hover:scale-105" variant="secondary">
+          <Button onClick={() => handleDownload('png')} className="flex-1 bg-green-600 text-white hover:bg-green-700 transition-transform hover:scale-105">
             <Download className="mr-2 h-4 w-4" /> Download .png
           </Button>
-          <Button onClick={() => handleDownload('svg')} className="flex-1 transition-transform hover:scale-105" variant="secondary">
+          <Button onClick={() => handleDownload('svg')} className="flex-1 bg-green-600 text-white hover:bg-green-700 transition-transform hover:scale-105">
             <Download className="mr-2 h-4 w-4" /> Download .svg
           </Button>
         </div>

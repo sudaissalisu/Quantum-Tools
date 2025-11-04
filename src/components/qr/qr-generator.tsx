@@ -19,7 +19,7 @@ export default function QRGenerator() {
 
   // State for each QR type
   const [url, setUrl] = useState("https://firebase.google.com/");
-  const [text, setText] = useState("Hello from QRGenius!");
+  const [text, setText] = useState("Hello from QuantumQR!");
   const [wifi, setWifi] = useState<WifiData>({ ssid: "", password: "", security: "WPA", hidden: false });
   const [vCard, setVCard] = useState<VCardData>({
     firstName: "", lastName: "", organization: "", title: "", phone: "", email: "", website: ""
@@ -54,15 +54,15 @@ export default function QRGenerator() {
   }, [activeTab, url, text, wifi, vCard]);
 
   return (
-    <div className="grid lg:grid-cols-2 gap-10 xl:gap-16">
-      <Card>
+    <div className="grid lg:grid-cols-2 gap-10 xl:gap-16 w-full max-w-6xl">
+      <Card className="bg-gray-900/60 backdrop-blur-sm border-gray-700 rounded-xl shadow-2xl p-0">
         <CardContent className="p-6">
           <Tabs value={activeTab} onValueChange={(value) => setActiveTab(value as TabValue)} className="w-full">
-            <TabsList className="grid w-full grid-cols-2 md:grid-cols-4 h-auto">
-              <TabsTrigger value="url"><Link className="mr-2" />URL</TabsTrigger>
-              <TabsTrigger value="text"><FileText className="mr-2" />Text</TabsTrigger>
-              <TabsTrigger value="wifi"><Wifi className="mr-2" />Wi-Fi</TabsTrigger>
-              <TabsTrigger value="contact"><User className="mr-2" />Contact</TabsTrigger>
+            <TabsList className="grid w-full grid-cols-2 md:grid-cols-4 h-auto bg-gray-900 rounded-lg p-1 text-gray-400">
+              <TabsTrigger value="url" className="data-[state=active]:bg-gray-700 data-[state=active]:text-white data-[state=active]:shadow-sm"><Link className="mr-2" />Link</TabsTrigger>
+              <TabsTrigger value="text" className="data-[state=active]:bg-gray-700 data-[state=active]:text-white data-[state=active]:shadow-sm"><FileText className="mr-2" />Text</TabsTrigger>
+              <TabsTrigger value="wifi" className="data-[state=active]:bg-gray-700 data-[state=active]:text-white data-[state=active]:shadow-sm"><Wifi className="mr-2" />Wi-Fi</TabsTrigger>
+              <TabsTrigger value="contact" className="data-[state=active]:bg-gray-700 data-[state=active]:text-white data-[state=active]:shadow-sm"><User className="mr-2" />Contact</TabsTrigger>
             </TabsList>
             <div className="mt-6">
               <TabsContent value="url"><UrlForm url={url} setUrl={setUrl} /></TabsContent>
