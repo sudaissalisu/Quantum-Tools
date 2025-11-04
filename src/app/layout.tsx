@@ -4,6 +4,7 @@ import './globals.css';
 import { Toaster } from "@/components/ui/toaster";
 import Header from '@/components/layout/header';
 import Link from 'next/link';
+import Image from 'next/image';
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' })
 const spaceMono = Space_Mono({
@@ -41,13 +42,23 @@ export default function RootLayout({
           <footer className="z-10 w-full py-6">
             <div className="container mx-auto flex flex-col sm:flex-row justify-between items-center text-center text-muted-foreground text-sm">
               <p>&copy; {new Date().getFullYear()} QuantumQR. All Rights Reserved.</p>
-              <div className="flex gap-4 mt-4 sm:mt-0">
-                <Link href="/terms" className="hover:text-primary transition-colors">
-                  Terms of Service
-                </Link>
-                <Link href="/privacy" className="hover:text-primary transition-colors">
-                  Privacy Policy
-                </Link>
+              <div className="flex flex-col sm:flex-row items-center gap-4 mt-4 sm:mt-0">
+                <a href="https://www.buymeacoffee.com/sudaissalisu" target="_blank" rel="noopener noreferrer">
+                  <Image 
+                    src="https://img.buymeacoffee.com/button-api/?text=Buy us a coffee --&emoji=🥤&slug=sudaissalisu&button_colour=5F7FFF&font_colour=ffffff&font_family=Inter&outline_colour=000000&coffee_colour=FFDD00" 
+                    alt="Buy us a coffee"
+                    width={217}
+                    height={60}
+                  />
+                </a>
+                <div className="flex gap-4">
+                  <Link href="/terms" className="hover:text-primary transition-colors">
+                    Terms of Service
+                  </Link>
+                  <Link href="/privacy" className="hover:text-primary transition-colors">
+                    Privacy Policy
+                  </Link>
+                </div>
               </div>
             </div>
           </footer>
