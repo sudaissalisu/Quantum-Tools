@@ -14,14 +14,15 @@ type QRCodeDisplayProps = {
   style: StyleData;
 };
 
-const QR_CODE_CONFIG = {
+const getQrCodeOptions = (value: string, style: StyleData) => ({
   width: 256,
   height: 256,
   margin: 5,
+  data: value,
   image: "/icon.svg",
   dotsOptions: {
     color: "#4dd8f9", // Electric Blue/Cyan
-    type: "rounded" as const,
+    type: style.dotType,
   },
   backgroundOptions: {
     color: "#00000000", // Transparent
@@ -36,42 +37,29 @@ const QR_CODE_CONFIG = {
   },
   cornersDotOptions: {
     color: "#8a63f7",
+    type: undefined,
   },
-};
+});
+
 
 export function QRCodeDisplay({ value, style }: QRCodeDisplayProps) {
   const [qrCode, setQrCode] = useState<QRCodeStyling | null>(null);
   const ref = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
-
+  
   useEffect(() => {
     if (typeof window !== 'undefined') {
-        const qrCodeInstance = new QRCodeStyling(QR_CODE_CONFIG);
-        setQrCode(qrCodeInstance);
+      const qr = new QRCodeStyling();
+      setQrCode(qr);
     }
   }, []);
 
   useEffect(() => {
     if (qrCode && ref.current) {
-      qrCode.append(ref.current);
+        ref.current.innerHTML = ""; // Clear previous QR code
+        qrCode.update(getQrCodeOptions(value, style));
+        qrCode.append(ref.current);
     }
-  }, [qrCode]);
-
-  useEffect(() => {
-    if (!qrCode) return;
-    qrCode.update({
-      data: value,
-      dotsOptions: {
-        ...QR_CODE_CONFIG.dotsOptions,
-        type: style.dotType,
-      },
-      cornersSquareOptions: {
-        ...QR_CODE_CONFIG.cornersSquareOptions,
-      },
-      cornersDotOptions: {
-        ...QR_CODE_CONFIG.cornersDotOptions,
-      },
-    });
   }, [value, style, qrCode]);
 
 
