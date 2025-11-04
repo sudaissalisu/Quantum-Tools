@@ -29,11 +29,11 @@ const removeBackgroundFlow = ai.defineFlow(
         { text: 'Make the background of this image transparent. Return only the subject. Do not add any background color, it must be transparent.' },
       ],
       config: {
-        responseModalities: ['IMAGE'],
+        responseModalities: ['TEXT', 'IMAGE'],
       },
     });
 
-    if (!media.url) {
+    if (!media?.url) {
       throw new Error('Image generation failed.');
     }
 
