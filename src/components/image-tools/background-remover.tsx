@@ -5,7 +5,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
-import { Upload, Download, Loader2 } from 'lucide-react';
+import { Upload, Download, Loader2, Bot } from 'lucide-react';
 import { removeBackground } from '@/ai/flows/remove-background-flow';
 import Image from 'next/image';
 
