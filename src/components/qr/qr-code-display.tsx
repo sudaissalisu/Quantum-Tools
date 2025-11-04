@@ -19,7 +19,7 @@ const getQrCodeOptions = (value: string, style: StyleData) => ({
   height: 256,
   margin: 5,
   data: value,
-  image: "/icon.svg",
+  image: style.logo || "/icon.svg",
   dotsOptions: {
     color: "#4dd8f9", // Electric Blue/Cyan
     type: style.dotType,
@@ -30,6 +30,7 @@ const getQrCodeOptions = (value: string, style: StyleData) => ({
   imageOptions: {
     imageSize: 0.4,
     margin: 4,
+    cornerTreatment: style.logoShape === 'round' ? 'circle' : 'square',
   },
   cornersSquareOptions: {
     color: "#8a63f7", // Vibrant Purple
@@ -57,7 +58,8 @@ export function QRCodeDisplay({ value, style }: QRCodeDisplayProps) {
   useEffect(() => {
     if (qrCode && ref.current) {
         ref.current.innerHTML = ""; // Clear previous QR code
-        qrCode.update(getQrCodeOptions(value, style));
+        const options = getQrCodeOptions(value, style);
+        qrCode.update(options);
         qrCode.append(ref.current);
     }
   }, [value, style, qrCode]);

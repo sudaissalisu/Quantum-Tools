@@ -26,7 +26,11 @@ export default function QRGenerator() {
   const [vCard, setVCard] = useState<VCardData>({
     firstName: "", lastName: "", organization: "", title: "", phone: "", email: "", website: ""
   });
-  const [style, setStyle] = useState<StyleData>({ dotType: 'rounded' });
+  const [style, setStyle] = useState<StyleData>({ 
+    dotType: 'rounded',
+    logo: undefined,
+    logoShape: 'square'
+  });
 
   useEffect(() => {
     if (activeTab !== 'style') {
