@@ -49,7 +49,7 @@ export default function Header() {
           >
             <img 
               src="https://img.buymeacoffee.com/button-api/?text=Buy Me a Coffee&emoji=🥤&slug=sudaissalisu&button_colour=FFDD00&font_colour=000000&font_family=Inter&outline_colour=000000&coffee_colour=FFDD00" 
-              alt="Buy us a coffee"
+              alt="Buy Me a Coffee"
               className="rounded-lg shadow-lg hover:scale-105 transition-transform"
             />
           </a>
