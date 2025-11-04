@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type Dispatch, type SetStateAction } from "react";
 import QRCodeStyling from "qr-code-styling";
 import { Button } from "@/components/ui/button";
 import { Download } from "lucide-react";
@@ -8,10 +8,13 @@ import { Card, CardContent } from "../ui/card";
 import { useToast } from "@/hooks/use-toast";
 import { motion } from "framer-motion";
 import type { StyleData } from './style-form';
+import { StyleForm } from "./style-form";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 
 type QRCodeDisplayProps = {
   value: string;
   style: StyleData;
+  setStyle: Dispatch<SetStateAction<StyleData>>;
 };
 
 const getQrCodeOptions = (value: string, style: StyleData) => ({
@@ -19,7 +22,7 @@ const getQrCodeOptions = (value: string, style: StyleData) => ({
   height: 256,
   margin: 5,
   data: value,
-  image: style.logo || "/icon.svg",
+  image: style.logo || undefined,
   dotsOptions: {
     color: "#4dd8f9", // Electric Blue/Cyan
     type: style.dotType,
@@ -30,6 +33,7 @@ const getQrCodeOptions = (value: string, style: StyleData) => ({
   imageOptions: {
     imageSize: 0.4,
     margin: 4,
+    hideBackgroundDots: true,
     cornerTreatment: style.logoShape === 'round' ? 'circle' : 'square',
   },
   cornersSquareOptions: {
@@ -38,12 +42,12 @@ const getQrCodeOptions = (value: string, style: StyleData) => ({
   },
   cornersDotOptions: {
     color: "#8a63f7",
-    type: undefined,
+    type: "dot" as const,
   },
 });
 
 
-export function QRCodeDisplay({ value, style }: QRCodeDisplayProps) {
+export function QRCodeDisplay({ value, style, setStyle }: QRCodeDisplayProps) {
   const [qrCode, setQrCode] = useState<QRCodeStyling | null>(null);
   const ref = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
@@ -102,6 +106,16 @@ export function QRCodeDisplay({ value, style }: QRCodeDisplayProps) {
             <Download className="mr-2 h-4 w-4" /> Download .svg
           </Button>
         </div>
+
+        <Accordion type="single" collapsible className="w-full">
+          <AccordionItem value="item-1">
+            <AccordionTrigger className="text-foreground/80 hover:text-foreground">Customize</AccordionTrigger>
+            <AccordionContent>
+              <StyleForm style={style} setStyle={setStyle} />
+            </AccordionContent>
+          </AccordionItem>
+        </Accordion>
+
       </CardContent>
     </Card>
   );

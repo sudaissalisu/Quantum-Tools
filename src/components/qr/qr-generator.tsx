@@ -1,23 +1,22 @@
 "use client";
 
-import { useState, useMemo, useEffect } from 'react';
+import { useState, useMemo } from 'react';
 import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Link, FileText, Wifi, User, Brush } from 'lucide-react';
+import { Link, FileText, Wifi, User } from 'lucide-react';
 
 import { UrlForm } from "./url-form";
 import { TextForm } from "./text-form";
 import { WifiForm, type WifiData } from "./wifi-form";
 import { ContactForm, type VCardData } from "./contact-form";
-import { StyleForm, type StyleData } from "./style-form";
 import { QRCodeDisplay } from "./qr-code-display";
 import { SupportWidget } from "./support-widget";
+import type { StyleData } from './style-form';
 
-type TabValue = "url" | "text" | "wifi" | "contact" | "style";
+type TabValue = "url" | "text" | "wifi" | "contact";
 
 export default function QRGenerator() {
   const [activeTab, setActiveTab] = useState<TabValue>("url");
-  const [previousTab, setPreviousTab] = useState<TabValue>("url");
 
   // State for each QR type
   const [url, setUrl] = useState("https://firebase.google.com/");
@@ -32,15 +31,8 @@ export default function QRGenerator() {
     logoShape: 'square'
   });
 
-  useEffect(() => {
-    if (activeTab !== 'style') {
-      setPreviousTab(activeTab);
-    }
-  }, [activeTab]);
-
   const qrValue = useMemo(() => {
-    const tab = activeTab === 'style' ? previousTab : activeTab;
-    switch (tab) {
+    switch (activeTab) {
       case "url":
         return url;
       case "text":
@@ -65,33 +57,31 @@ export default function QRGenerator() {
       default:
         return url; 
     }
-  }, [activeTab, previousTab, url, text, wifi, vCard]);
+  }, [activeTab, url, text, wifi, vCard]);
 
   return (
     <div className="grid lg:grid-cols-2 gap-10 xl:gap-16 w-full max-w-6xl">
       <Card className="bg-card/80 backdrop-blur-sm border-border/50 rounded-xl shadow-2xl p-0">
         <CardContent className="p-6">
           <Tabs value={activeTab} onValueChange={(value) => setActiveTab(value as TabValue)} className="w-full">
-            <TabsList className="grid w-full grid-cols-3 md:grid-cols-5 h-auto bg-secondary/80 rounded-lg p-1 text-muted-foreground">
+            <TabsList className="grid w-full grid-cols-2 md:grid-cols-4 h-auto bg-secondary/80 rounded-lg p-1 text-muted-foreground">
               <TabsTrigger value="url" className="data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm"><Link className="mr-2" />Link</TabsTrigger>
               <TabsTrigger value="text" className="data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm"><FileText className="mr-2" />Text</TabsTrigger>
               <TabsTrigger value="wifi" className="data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm"><Wifi className="mr-2" />Wi-Fi</TabsTrigger>
               <TabsTrigger value="contact" className="data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm"><User className="mr-2" />Contact</TabsTrigger>
-              <TabsTrigger value="style" className="data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm"><Brush className="mr-2" />Style</TabsTrigger>
             </TabsList>
             <div className="mt-6">
               <TabsContent value="url"><UrlForm url={url} setUrl={setUrl} /></TabsContent>
               <TabsContent value="text"><TextForm text={text} setText={setText} /></TabsContent>
               <TabsContent value="wifi"><WifiForm wifi={wifi} setWifi={setWifi} /></TabsContent>
               <TabsContent value="contact"><ContactForm vCard={vCard} setVCard={setVCard} /></TabsContent>
-              <TabsContent value="style"><StyleForm style={style} setStyle={setStyle} /></TabsContent>
             </div>
           </Tabs>
         </CardContent>
       </Card>
 
       <div className="space-y-6">
-        <QRCodeDisplay value={qrValue} style={style} />
+        <QRCodeDisplay value={qrValue} style={style} setStyle={setStyle} />
         <SupportWidget />
       </div>
     </div>
