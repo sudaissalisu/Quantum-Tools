@@ -45,7 +45,7 @@ export default function Header() {
           </nav>
           <a href="https://www.buymeacoffee.com/sudaissalisu" target="_blank" rel="noopener noreferrer" className="hidden sm:block">
             <Image 
-              src="https://img.buymeacoffee.com/button-api/?text=Buy us a coffee --&emoji=🥤&slug=sudaissalisu&button_colour=5F7FFF&font_colour=ffffff&font_family=Inter&outline_colour=000000&coffee_colour=FFDD00" 
+              src="https://img.buymeacoffee.com/button-api/?text=Buy us a coffee --&amp;emoji=🥤&amp;slug=sudaissalisu&amp;button_colour=5F7FFF&amp;font_colour=ffffff&amp;font_family=Inter&amp;outline_colour=000000&amp;coffee_colour=FFDD00" 
               alt="Buy us a coffee"
               width={217}
               height={60}
