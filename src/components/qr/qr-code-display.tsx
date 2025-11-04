@@ -86,36 +86,38 @@ export function QRCodeDisplay({ value, style, setStyle }: QRCodeDisplayProps) {
   };
 
   return (
-    <Card className="sticky top-8 bg-card/80 backdrop-blur-sm border-border/50 rounded-xl shadow-2xl">
-      <CardContent className="p-6 flex flex-col items-center gap-6">
-        <motion.div
-          key={value + JSON.stringify(style)}
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.3 }}
-          className="bg-background p-4 rounded-lg shadow-inner"
-        >
-          <div ref={ref} />
-        </motion.div>
-        <div className="flex gap-4 w-full">
-          <Button onClick={() => handleDownload('png')} className="flex-1 bg-primary/90 text-primary-foreground hover:bg-primary transition-transform hover:scale-105">
-            <Download className="mr-2 h-4 w-4" /> Download .png
-          </Button>
-          <Button onClick={() => handleDownload('svg')} className="flex-1 bg-primary/90 text-primary-foreground hover:bg-primary transition-transform hover:scale-105">
-            <Download className="mr-2 h-4 w-4" /> Download .svg
-          </Button>
-        </div>
+    <div className="sticky top-8">
+      <Card className="bg-card/80 backdrop-blur-sm border-border/50 rounded-xl shadow-2xl">
+        <CardContent className="p-6 flex flex-col items-center gap-6">
+          <motion.div
+            key={value + JSON.stringify(style)}
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.3 }}
+            className="bg-background p-4 rounded-lg shadow-inner"
+          >
+            <div ref={ref} />
+          </motion.div>
+          <div className="flex gap-4 w-full">
+            <Button onClick={() => handleDownload('png')} className="flex-1 bg-primary/90 text-primary-foreground hover:bg-primary transition-transform hover:scale-105">
+              <Download className="mr-2 h-4 w-4" /> Download .png
+            </Button>
+            <Button onClick={() => handleDownload('svg')} className="flex-1 bg-primary/90 text-primary-foreground hover:bg-primary transition-transform hover:scale-105">
+              <Download className="mr-2 h-4 w-4" /> Download .svg
+            </Button>
+          </div>
 
-        <Accordion type="single" collapsible className="w-full">
-          <AccordionItem value="item-1">
-            <AccordionTrigger className="text-foreground/80 hover:text-foreground">Customize</AccordionTrigger>
-            <AccordionContent>
-              <StyleForm style={style} setStyle={setStyle} />
-            </AccordionContent>
-          </AccordionItem>
-        </Accordion>
+          <Accordion type="single" collapsible className="w-full">
+            <AccordionItem value="item-1">
+              <AccordionTrigger className="text-foreground/80 hover:text-foreground">Customize</AccordionTrigger>
+              <AccordionContent>
+                <StyleForm style={style} setStyle={setStyle} />
+              </AccordionContent>
+            </AccordionItem>
+          </Accordion>
 
-      </CardContent>
-    </Card>
+        </CardContent>
+      </Card>
+    </div>
   );
 }
