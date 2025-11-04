@@ -10,7 +10,6 @@ import { TextForm } from "./text-form";
 import { WifiForm, type WifiData } from "./wifi-form";
 import { ContactForm, type VCardData } from "./contact-form";
 import { QRCodeDisplay } from "./qr-code-display";
-import { SupportWidget } from "./support-widget";
 import type { StyleData } from './style-form';
 
 type TabValue = "url" | "text" | "wifi" | "contact";
@@ -87,7 +86,6 @@ export default function QRGenerator() {
 
       <div className="space-y-6">
         <QRCodeDisplay value={qrValue} style={style} setStyle={setStyle} />
-        <SupportWidget />
       </div>
     </div>
   );
