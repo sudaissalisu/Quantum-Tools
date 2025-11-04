@@ -3,6 +3,7 @@ import { Inter, Space_Mono } from 'next/font/google'
 import './globals.css';
 import { Toaster } from "@/components/ui/toaster";
 import Header from '@/components/layout/header';
+import Link from 'next/link';
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' })
 const spaceMono = Space_Mono({
@@ -38,8 +39,16 @@ export default function RootLayout({
             {children}
           </main>
           <footer className="z-10 w-full py-6">
-            <div className="container mx-auto text-center text-muted-foreground text-sm">
+            <div className="container mx-auto flex flex-col sm:flex-row justify-between items-center text-center text-muted-foreground text-sm">
               <p>&copy; {new Date().getFullYear()} QuantumQR. All Rights Reserved.</p>
+              <div className="flex gap-4 mt-4 sm:mt-0">
+                <Link href="/terms" className="hover:text-primary transition-colors">
+                  Terms of Service
+                </Link>
+                <Link href="/privacy" className="hover:text-primary transition-colors">
+                  Privacy Policy
+                </Link>
+              </div>
             </div>
           </footer>
           <Toaster />
