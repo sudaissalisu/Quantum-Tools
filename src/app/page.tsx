@@ -9,8 +9,9 @@ export default function Home() {
   const [generatedCount, setGeneratedCount] = useState(17277);
 
   useEffect(() => {
+    // Increment the counter every 2.5 seconds for a more steady feel
     const interval = setInterval(() => {
-      setGeneratedCount((prevCount) => prevCount + Math.floor(Math.random() * 3) + 1);
+      setGeneratedCount((prevCount) => prevCount + 1);
     }, 2500); // Update every 2.5 seconds
 
     return () => clearInterval(interval);
