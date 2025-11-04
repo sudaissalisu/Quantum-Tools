@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Link, FileText, Wifi, User, Brush } from 'lucide-react';
@@ -17,6 +17,7 @@ type TabValue = "url" | "text" | "wifi" | "contact" | "style";
 
 export default function QRGenerator() {
   const [activeTab, setActiveTab] = useState<TabValue>("url");
+  const [previousTab, setPreviousTab] = useState<TabValue>("url");
 
   // State for each QR type
   const [url, setUrl] = useState("https://firebase.google.com/");
@@ -27,11 +28,16 @@ export default function QRGenerator() {
   });
   const [style, setStyle] = useState<StyleData>({ dotType: 'rounded' });
 
+  useEffect(() => {
+    if (activeTab !== 'style') {
+      setPreviousTab(activeTab);
+    }
+  }, [activeTab]);
 
   const qrValue = useMemo(() => {
-    switch (activeTab) {
+    const tab = activeTab === 'style' ? previousTab : activeTab;
+    switch (tab) {
       case "url":
-      case "style": // Fallthrough to use URL when on style tab
         return url;
       case "text":
         return text;
@@ -53,39 +59,9 @@ export default function QRGenerator() {
         ];
         return vCardParts.filter(Boolean).join("\n");
       default:
-        // This should be unreachable if all tabs are handled
         return url; 
     }
-  }, [activeTab, url, text, wifi, vCard]);
-
-  const displayValue = useMemo(() => {
-    // If the style tab is active, we need to show a QR code for another data type.
-    // Let's create a priority list for which data to show.
-    if (activeTab === 'style') {
-        if(url) return url;
-        if(text) return text;
-        if(wifi.ssid) return `WIFI:S:${wifi.ssid};T:${wifi.security};P:${wifi.password};H:${wifi.hidden};;`;
-        if(vCard.firstName || vCard.lastName) {
-            const vCardParts = [
-              "BEGIN:VCARD",
-              "VERSION:3.0",
-              `N:${vCard.lastName};${vCard.firstName}`,
-              `FN:${vCard.firstName} ${vCard.lastName}`,
-              vCard.organization && `ORG:${vCard.organization}`,
-              vCard.title && `TITLE:${vCard.title}`,
-              vCard.phone && `TEL;TYPE=WORK,VOICE:${vCard.phone}`,
-              vCard.email && `EMAIL:${vCard.email}`,
-              vCard.website && `URL:${vCard.website}`,
-              "END:VCARD",
-            ];
-            return vCardParts.filter(Boolean).join("\n");
-        }
-        // Fallback to url if all else is empty
-        return url;
-    }
-    return qrValue;
-  }, [activeTab, qrValue, url, text, wifi, vCard]);
-
+  }, [activeTab, previousTab, url, text, wifi, vCard]);
 
   return (
     <div className="grid lg:grid-cols-2 gap-10 xl:gap-16 w-full max-w-6xl">
@@ -111,7 +87,7 @@ export default function QRGenerator() {
       </Card>
 
       <div className="space-y-6">
-        <QRCodeDisplay value={displayValue} style={style} />
+        <QRCodeDisplay value={qrValue} style={style} />
         <SupportWidget />
       </div>
     </div>

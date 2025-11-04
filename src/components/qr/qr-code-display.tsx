@@ -40,17 +40,25 @@ const QR_CODE_CONFIG = {
 };
 
 export function QRCodeDisplay({ value, style }: QRCodeDisplayProps) {
-  const [qrCode] = useState(new QRCodeStyling(QR_CODE_CONFIG));
+  const [qrCode, setQrCode] = useState<QRCodeStyling | null>(null);
   const ref = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
 
   useEffect(() => {
-    if (ref.current) {
+    if (typeof window !== 'undefined') {
+        const qrCodeInstance = new QRCodeStyling(QR_CODE_CONFIG);
+        setQrCode(qrCodeInstance);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (qrCode && ref.current) {
       qrCode.append(ref.current);
     }
   }, [qrCode, ref]);
 
   useEffect(() => {
+    if (!qrCode) return;
     qrCode.update({
       data: value,
       dotsOptions: { ...QR_CODE_CONFIG.dotsOptions, type: style.dotType },
@@ -59,6 +67,7 @@ export function QRCodeDisplay({ value, style }: QRCodeDisplayProps) {
 
 
   const handleDownload = async (format: 'png' | 'svg') => {
+    if (!qrCode) return;
     try {
       await qrCode.download({
         name: "quantum-qrcode",
