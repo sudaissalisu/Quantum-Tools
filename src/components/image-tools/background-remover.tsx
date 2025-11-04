@@ -64,7 +64,7 @@ export default function BackgroundRemover() {
 
     try {
       const resultBlob = await removeBackground(originalImage, {
-        publicPath: '/assets/imgly/',
+        publicPath: 'https://unpkg.com/@imgly/background-removal@1.4.1/assets/imgly/',
         progress: (key, current, total) => {
           const progress = (current / total) * 100;
           setProgress(progress);
