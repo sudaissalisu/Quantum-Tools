@@ -3,12 +3,11 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { QrCode, Scan, Bot } from "lucide-react";
+import { QrCode, Scan } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const navLinks = [
   { href: "/", label: "QR Generator", icon: QrCode },
-  { href: "/image-tools", label: "Image Tools", icon: Bot },
 ];
 
 export default function Header() {
