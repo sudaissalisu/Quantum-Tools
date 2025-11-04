@@ -43,14 +43,6 @@ export default function RootLayout({
             <div className="container mx-auto flex flex-col sm:flex-row justify-between items-center text-center text-muted-foreground text-sm">
               <p>&copy; {new Date().getFullYear()} QuantumQR. All Rights Reserved.</p>
               <div className="flex flex-col sm:flex-row items-center gap-4 mt-4 sm:mt-0">
-                <a href="https://www.buymeacoffee.com/sudaissalisu" target="_blank" rel="noopener noreferrer">
-                  <Image 
-                    src="https://img.buymeacoffee.com/button-api/?text=Buy us a coffee --&emoji=🥤&slug=sudaissalisu&button_colour=5F7FFF&font_colour=ffffff&font_family=Inter&outline_colour=000000&coffee_colour=FFDD00" 
-                    alt="Buy us a coffee"
-                    width={217}
-                    height={60}
-                  />
-                </a>
                 <div className="flex gap-4">
                   <Link href="/terms" className="hover:text-primary transition-colors">
                     Terms of Service
